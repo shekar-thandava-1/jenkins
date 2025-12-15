@@ -15,12 +15,12 @@ pipeline {
 		}		
 		stage('Install node dependencies'){
 			steps {
-				sh 'npm install'
+				bat 'npm install'
 			}
 		}
 		stage('Test Code'){
 			steps {
-				sh 'npm test'
+				bat 'npm test'
 			}
 		}
 		stage('Build Docker Image'){
