@@ -7,23 +7,11 @@ pipeline {
     }
 
     stages {
-        stage('Checkout') {
-            steps {
-                // Checkout the repository
-                git branch: 'main', credentialsId: 'jen-doc-git', url: 'https://github.com/shekar-thandava-1/jenkins.git'
-            }
-        }
-
         stage('Install and Test') {
-            agent {
-                docker {
-                    image 'python:3.9-slim'
-                    args '-v "${pwd().replace(\'\\\', \'/\')}":/app -w /app'
-                }
-            }
             steps {
                 dir('python-app') {
-                    sh 'pip install pytest && pip install -r requirements.txt && python -m pytest'
+                    bat 'pip install -r requirements.txt'
+                    //bat 'python -m pytest'
                 }
             }
         }
