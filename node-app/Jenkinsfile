@@ -5,7 +5,7 @@ pipeline {
 	}
 	environment {
 		DOCKER_HUB_CREDENTIALS_ID = 'jen-dockerhub'
-		DOCKER_HUB_REPO = 'shekthan5/shekthan5-app'
+		DOCKER_HUB_REPO = 'shekthan5/shekthan5-nodeapp'
 	}
 	stages {
 		stage('Checkout Github'){
@@ -15,12 +15,16 @@ pipeline {
 		}		
 		stage('Install node dependencies'){
 			steps {
-				bat 'npm install'
+				dir('node-app') {
+					bat 'npm install'
+				}
 			}
 		}
 		stage('Test Code'){
 			steps {
-				bat 'npm test'
+				dir('node-app') {
+					bat 'npm test'
+				}
 			}
 		}
 		stage('Build Docker Image'){
