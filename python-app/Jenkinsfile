@@ -16,14 +16,8 @@ pipeline {
 
         stage('Install and Test') {
             steps {
-                script {
-                    docker.image('python:3.9-slim').inside {
-                        sh '''
-                            cd python-app
-                            pip install -r requirements.txt
-                            python -m pytest
-                        '''
-                    }
+                dir('python-app') {
+                    bat 'docker run --rm -v "%CD%:/app" -w /app python:3.9-slim sh -c "pip install -r requirements.txt && python -m pytest"'
                 }
             }
         }
