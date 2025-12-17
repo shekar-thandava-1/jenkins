@@ -10,7 +10,7 @@ pipeline {
         stage('Install and Test') {
             steps {
                 dir('python-app') {
-                    bat 'pip install -r requirements.txt'
+                    sh 'pip install -r requirements.txt'
                     //bat 'python -m pytest'
                 }
             }
