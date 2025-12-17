@@ -18,11 +18,12 @@ pipeline {
             agent {
                 docker {
                     image 'python:3.9-slim'
-                    args '-v ${env.WORKSPACE}/python-app:/app -w /app'
                 }
             }
             steps {
-                sh 'pip install pytest && pip install -r requirements.txt && python -m pytest'
+                dir('python-app') {
+                    sh 'pip install pytest && pip install -r requirements.txt && python -m pytest'
+                }
             }
         }
 
