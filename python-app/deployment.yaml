@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: py-app-deployment
+  name: python-app-deployment
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: node-app
+      app: python-app
   template:
     metadata:
       labels:
-        app: node-app
+        app: python-app
     spec:
       containers:
-      - name: node-app
+      - name: python-app
         image: shekthan5/shekthan5-python-app:latest
         ports:
         - containerPort: 3500
