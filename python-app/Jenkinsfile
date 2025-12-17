@@ -1,0 +1,67 @@
+pipeline {
+    agent any
+
+    environment {
+        DOCKER_HUB_CREDENTIALS_ID = 'jen-dockerhub'
+        DOCKER_HUB_REPO = 'your-dockerhub-username/python-app' // CHANGE THIS
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                // Checkout the repository
+                git branch: 'main', credentialsId: 'jen-doc-git', url: 'https://github.com/shekar-thandava-1/jenkins.git'
+            }
+        }
+
+        stage('Install Dependencies') {
+            steps {
+                // Using a python container to install dependencies
+                script {
+                    docker.image('python:3.9-slim').inside {
+                        sh 'pip install -r requirements.txt'
+                    }
+                }
+            }
+        }
+
+        stage('Test') {
+            steps {
+                // Placeholder for running tests
+                echo 'Running tests...'
+                // Example: sh 'python -m pytest'
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    def dockerImage = docker.build("${DOCKER_HUB_REPO}:latest", "./python-app")
+                }
+            }
+        }
+
+        stage('Push Image to DockerHub') {
+            steps {
+                script {
+                    docker.withRegistry('https://registry.hub.docker.com', DOCKER_HUB_CREDENTIALS_ID) {
+                        def dockerImage = docker.image("${DOCKER_HUB_REPO}:latest")
+                        dockerImage.push()
+                    }
+                }
+            }
+        }
+        
+        // Note: A Kubernetes deployment stage would require deployment.yaml and service.yaml files
+        // similar to the nodejs example.
+    }
+
+    post {
+        success {
+            echo 'Python App Pipeline: SUCCESS'
+        }
+        failure {
+            echo 'Python App Pipeline: FAILED'
+        }
+    }
+}
