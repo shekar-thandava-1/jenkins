@@ -16,7 +16,7 @@ spec:
       - name: node-app
         image: shekthan5/shekthan5-python-app:latest
         ports:
-        - containerPort: 3000
+        - containerPort: 3500
       imagePullSecrets:
       - name: dockerhub-secret
 
