@@ -5,13 +5,13 @@ FROM node:alpine
 WORKDIR /app
 
 # Copy package.json and package-lock.json to the container
-COPY package*.json ./
+COPY /node-app package*.json ./
 
 # Install only production nodeJS dependencies in Docker Image
 RUN npm install --only=production
 
 # Copy the rest of the application code into the container
-COPY . .
+COPY ./node-app  .
 
 # Expose the app on a port
 EXPOSE 3000
