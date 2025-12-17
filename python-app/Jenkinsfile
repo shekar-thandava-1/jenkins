@@ -39,7 +39,7 @@ pipeline {
             steps {
                 dir('python-app') {
                     script {
-                        def dockerImage = docker.build("${DOCKER_HUB_REPO}:latest", "./python-app")
+                        def dockerImage = docker.build("${DOCKER_HUB_REPO}:latest")
                     }               
                 }
             }
