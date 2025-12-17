@@ -29,25 +29,30 @@ pipeline {
 		}
 		stage('Build Docker Image'){
 			steps {
-				script {
-					dockerImage = docker.build("${DOCKER_HUB_REPO}:latest")
+				dir('node-app') {
+					script {
+						dockerImage = docker.build("${DOCKER_HUB_REPO}:latest")
+					}
 				}
 			}
 		}
 		stage('Push Image to DockerHub'){
 			steps {
-				script {
-					docker.withRegistry('https://registry.hub.docker.com', "${DOCKER_HUB_CREDENTIALS_ID}"){
-						dockerImage.push('latest')
+				dir('node-app') {
+					script {
+						docker.withRegistry('https://registry.hub.docker.com', "${DOCKER_HUB_CREDENTIALS_ID}"){
+							dockerImage.push('latest')
+						}
 					}
 				}
 			}
 		}
 		stage('Deploy to Kubernetes'){
 			steps {
-				script{
-					kubeconfig(caCertificate: 'LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUJlRENDQVIyZ0F3SUJBZ0lCQURBS0JnZ3Foa2pPUFFRREFqQWpNU0V3SHdZRFZRUUREQmhyTTNNdGMyVnkKZG1WeUxXTmhRREUzTmpVM01qWTBPVGd3SGhjTk1qVXhNakUwTVRVek5EVTRXaGNOTXpVeE1qRXlNVFV6TkRVNApXakFqTVNFd0h3WURWUVFEREJock0zTXRjMlZ5ZG1WeUxXTmhRREUzTmpVM01qWTBPVGd3V1RBVEJnY3Foa2pPClBRSUJCZ2dxaGtqT1BRTUJCd05DQUFSbC9NQS9GUnFkTHRZYnZYeW0vM2NUQTluZytxK0EzRG16MVJuM2dTSW4Kc2dQcDdoQWI0WUU4bXFuZnQ0ZWNJb1Z6cEFCYWZqbDZtSGljRnRkbW5sSzNvMEl3UURBT0JnTlZIUThCQWY4RQpCQU1DQXFRd0R3WURWUjBUQVFIL0JBVXdBd0VCL3pBZEJnTlZIUTRFRmdRVWlCUGx1ejd4cjM3WDBqL0dXS1U1CnI4MEd3UUF3Q2dZSUtvWkl6ajBFQXdJRFNRQXdSZ0loQU1kM1ZDSVlueUVJbTVRbWtMeXpFczVKQmdGTTFKSlEKZ2ZsYk02TlFMKzVnQWlFQWx2T1QrbDVQOGUvRWxsUVBQY1Mrc1BoS0VVVTdYM1RKWmpIS3ZadXg4ODA9Ci0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K', credentialsId: 'rancher-d-kubernetes-id', serverUrl: 'https://127.0.0.1:6443') {
-				    bat 'kubectl apply -f deployment.yaml'
+				dir('node-app') {
+					script{
+						kubeconfig(caCertificate: 'LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUJlRENDQVIyZ0F3SUJBZ0lCQURBS0JnZ3Foa2pPUFFRREFqQWpNU0V3SHdZRFZRUUREQmhyTTNNdGMyVnkKZG1WeUxXTmhRREUzTmpVM01qWTBPVGd3SGhjTk1qVXhNakUwTVRVek5EVTRXaGNOTXpVeE1qRXlNVFV6TkRVNApXakFqTVNFd0h3WURWUVFEREJock0zTXRjMlZ5ZG1WeUxXTmhRREUzTmpVM01qWTBPVGd3V1RBVEJnY3Foa2pPClBRSUJCZ2dxaGtqT1BRTUJCd05DQUFSbC9NQS9GUnFkTHRZYnZYeW0vM2NUQTluZytxK0EzRG16MVJuM2dTSW4Kc2dQcDdoQWI0WUU4bXFuZnQ0ZWNJb1Z6cEFCYWZqbDZtSGljRnRkbW5sSzNvMEl3UURBT0JnTlZIUThCQWY4RQpCQU1DQXFRd0R3WURWUjBUQVFIL0JBVXdBd0VCL3pBZEJnTlZIUTRFRmdRVWlCUGx1ejd4cjM3WDBqL0dXS1U1CnI4MEd3UUF3Q2dZSUtvWkl6ajBFQXdJRFNRQXdSZ0loQU1kM1ZDSVlueUVJbTVRbWtMeXpFczVKQmdGTTFKSlEKZ2ZsYk02TlFMKzVnQWlFQWx2T1QrbDVQOGUvRWxsUVBQY1Mrc1BoS0VVVTdYM1RKWmpIS3ZadXg4ODA9Ci0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K', credentialsId: 'rancher-d-kubernetes-id', serverUrl: 'https://127.0.0.1:6443') {
+						bat 'kubectl apply -f deployment.yaml'
 					}
 				}
 			}
