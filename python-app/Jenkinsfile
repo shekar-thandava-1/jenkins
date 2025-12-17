@@ -1,12 +1,6 @@
 pipeline {
     agent any
 
-    tools {
-        // The name 'Python-3.9' must match a Python installation
-        // configured in Jenkins -> Global Tool Configuration.
-        python 'Python-3.9'
-    }
-
     environment {
         DOCKER_HUB_CREDENTIALS_ID = 'jen-dockerhub'
         DOCKER_HUB_REPO = 'shekthan5/shekthan5-python-app' // CHANGE THIS
@@ -20,19 +14,16 @@ pipeline {
             }
         }
 
-        stage('Install Dependencies') {
+        stage('Install and Test') {
             steps {
-                dir('python-app') {
-                    bat 'python -m pip install -r requirements.txt'
-                }
-            }
-        }
-
-        stage('Test') {
-            steps {
-                dir('python-app') {// Placeholder for running tests
-                    echo 'Running tests...'
-                    bat 'python -m pytest'
+                script {
+                    docker.image('python:3.9-slim').inside {
+                        sh '''
+                            cd python-app
+                            pip install -r requirements.txt
+                            python -m pytest
+                        '''
+                    }
                 }
             }
         }
