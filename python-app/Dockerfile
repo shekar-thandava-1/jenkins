@@ -14,10 +14,10 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # Make port 3000 available to the world outside this container
-EXPOSE 3000
+EXPOSE 3500
 
 # Define environment variable
-ENV PORT 3000
+ENV PORT 3500
 
 # Run app.py when the container launches
 CMD ["python", "app.py"]
