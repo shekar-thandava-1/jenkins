@@ -15,10 +15,14 @@ pipeline {
         }
 
         stage('Install and Test') {
-            steps {
-                dir('python-app') {
-                    bat 'docker run --rm -v "%CD%:/app" -w /app python:3.9-slim sh -c "pip install pytest && pip install -r requirements.txt && python -m pytest"'
+            agent {
+                docker {
+                    image 'python:3.9-slim'
+                    args '-v ${env.WORKSPACE}/python-app:/app -w /app'
                 }
+            }
+            steps {
+                sh 'pip install pytest && pip install -r requirements.txt && python -m pytest'
             }
         }
 
