@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: node-app
-        image: shekthan5/shekthan5-app:latest
+        image: shekthan5/shekthan5-nodeapp:latest
         ports:
         - containerPort: 3000
       imagePullSecrets:
