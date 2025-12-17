@@ -1,6 +1,12 @@
 pipeline {
     agent any
 
+    tools {
+        // The name 'Python-3.9' must match a Python installation
+        // configured in Jenkins -> Global Tool Configuration.
+        python 'Python-3.9'
+    }
+
     environment {
         DOCKER_HUB_CREDENTIALS_ID = 'jen-dockerhub'
         DOCKER_HUB_REPO = 'shekthan5/shekthan5-python-app' // CHANGE THIS
