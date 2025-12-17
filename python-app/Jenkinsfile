@@ -7,14 +7,14 @@ pipeline {
     }
 
     stages {
-        stage('Install and Test') {
-            steps {
-                dir('python-app') {
-                    sh 'pip install -r requirements.txt'
-                    //bat 'python -m pytest'
-                }
-            }
-        }
+        //stage('Install and Test') {
+        //   steps {
+        //        dir('python-app') {
+        //            sh 'pip install -r requirements.txt'
+        //            //bat 'python -m pytest'
+        //        }
+        //    }
+        //}
 
         stage('Build Docker Image') {
             steps {
