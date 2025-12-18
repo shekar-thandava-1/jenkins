@@ -55,7 +55,7 @@ pipeline {
 						bat 'kubectl delete deployment.apps/node-app-deployment --ignore-not-found=true'
                         bat 'kubectl delete service/node-app-deployment --ignore-not-found=true'
 						bat 'kubectl apply -f deployment.yaml'
-                        bat 'kubectl expose deployment node-app-deployment --type=LoadBalancer --name=node-app-deployment --port=3500 --target-port=3500'
+                        bat 'kubectl expose deployment node-app-deployment --type=LoadBalancer --name=node-app-deployment --port=3000 --target-port=3000'
 						}
 					}
 				}
